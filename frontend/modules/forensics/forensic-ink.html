@@ -14,28 +14,174 @@
 <div class="data-streams" id="dataStreams"></div>
 
 <nav class="navbar">
-  <div class="nav-left">
-    <div class="logo-wrapper">
-      <div class="logo-text-badge">JFX</div>
-      <div class="logo-ping"></div>
+    <div class="nav-left">
+      <div class="logo-wrapper">
+        <img src="../../assets/images/WhatsApp Image 2026-01-07 at 9.59.21 PM.jpeg" class="logo" alt="logo">
+        <div class="logo-ping"></div>
+      </div>
+      <div class="brand-block">
+        <span class="brand" data-text="JusticeFlowX">JusticeFlowX</span>
+        <span class="brand-sub">Verification System v2.4</span>
+      </div>
     </div>
-    <div class="brand-block">
-      <span class="brand">JusticeFlowX</span>
-      <span class="brand-sub">Verification System v2.4</span>
+
+    <div class="nav-center">
+      <a href="../../index.html" class="nav-link"><i class='bx bx-grid-alt'></i><span>Dashboard</span></a>
+      <a href="../criminal/criminal.html" class="nav-link"><i class='bx bx-user'></i><span>Criminal</span></a>
+      <a href="../case/case.html" class="nav-link"><i class='bx bx-folder'></i><span>Case</span></a>
+      <a href="../evidence/evidence.html" class="nav-link"><i class='bx bx-archive'></i><span>Evidence</span></a>
+      <a href="../forensics/forensic.html" class="nav-link"><i class='bx bx-search-alt'></i><span>Forensics</span></a>
+      <a href="../network/network.html" class="nav-link"><i class='bx bx-network-chart'></i><span>Network</span></a>
+      <a href="../biometrics/face-scan.html" class="nav-link"><i class='bx bx-fingerprint'></i><span>Biometrics</span></a>
+      <a href="../threat_intel/threat_intel.html" class="nav-link"><i class='bx bx-shield-quarter'></i><span>Threat Intel</span></a>
+      <a href="../law/law.html" class="nav-link"><i class='bx bxs-book-reader'></i><span>Law</span></a>
+      <a href="../system/system.html" class="nav-link"><i class='bx bx-server'></i><span>System</span></a>
     </div>
-  </div>
-  <div class="nav-center">
-    <a href="../../index.html" class="nav-link"><i class='bx bx-grid-alt'></i><span>Dashboard</span></a>
-    <a href="forensic.html" class="nav-link"><i class='bx bx-search-alt'></i><span>Forensics</span></a>
-    <a href="forensic-metadata.html" class="nav-link"><i class='bx bx-code-alt'></i><span>Metadata</span></a>
-    <a href="forensic-ink.html" class="nav-link active"><i class='bx bx-droplet'></i><span>Ink Analysis</span></a>
-    <a href="forensic-serial.html" class="nav-link"><i class='bx bx-barcode'></i><span>Serial Check</span></a>
-  </div>
-  <div class="nav-right">
-    <div class="status-cluster"><div class="status-dot"></div><span class="system-status">SYSTEMS ONLINE</span></div>
-    <div class="clock-display" id="clockDisplay">00:00:00</div>
-  </div>
+
+    <div class="nav-right">
+      <div class="status-cluster">
+        <div class="status-dot"></div>
+        <span class="system-status">SYSTEMS ONLINE</span>
+      </div>
+      <div class="clock-display" id="clockDisplay">00:00:00</div>
+      <div class="menu">
+        <button class="menu-trigger" id="menuBtn" aria-label="Menu">
+          <i class='bx bx-dots-vertical-rounded'></i>
+        </button>
+        <div class="dropdown" id="menuDropdown">
+          <div class="dropdown-header">QUICK ACCESS</div>
+          <a href="../case/case-report.html"><i class='bx bx-file'></i> Case Reports</a>
+          <a href="../system/infraction.html"><i class='bx bx-list-ul'></i> System Logs</a>
+          <a href="../system/system.html"><i class='bx bx-shield'></i> System Health</a>
+          <a href="../case/case-analysis.html"><i class='bx bx-brain'></i> AI Decision Support</a>
+          <a href="../forensics/forensic.html"><i class='bx bx-search-alt'></i> Document Forensics</a>
+          <a href="../network/network.html"><i class='bx bx-network-chart'></i> Network Detection</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" id="logoutBtn" class="logout-link"><i class='bx bx-log-out'></i> Logout</a>
+        </div>
+      </div>
+    </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('.nav-center .nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          const targetHref = this.getAttribute('href');
+          if (targetHref && !targetHref.includes('index.html') && targetHref !== '#') {
+            e.preventDefault();
+            showGlobalAuthModal(targetHref, this.querySelector('span').innerText);
+          }
+        });
+      });
+
+      function showGlobalAuthModal(redirectUrl, moduleName) {
+        let modalColor = '#00f5ff';
+        let modalGlow = 'rgba(0,245,255,0.15)';
+        let iconClass = 'bx-shield-quarter';
+        let badgeText = 'SECURE CHANNEL';
+        
+        let type = moduleName.toLowerCase();
+        if (type.includes('criminal')) { modalColor = '#ff2b5e'; modalGlow = 'rgba(255,43,94,0.15)'; iconClass = 'bx-user'; badgeText = 'CLASS-A RESTRICTED'; }
+        else if (type.includes('case')) { modalColor = '#00ff88'; modalGlow = 'rgba(0,255,136,0.15)'; iconClass = 'bx-folder'; badgeText = 'ACTIVE CASE CONTROL'; }
+        else if (type.includes('evidence')) { modalColor = '#ffb800'; modalGlow = 'rgba(255,184,0,0.15)'; iconClass = 'bx-archive'; badgeText = 'CHAIN OF CUSTODY'; }
+        else if (type.includes('biometric')) { modalColor = '#7b2fff'; modalGlow = 'rgba(123,47,255,0.15)'; iconClass = 'bx-fingerprint'; badgeText = 'BIOMETRIC INDEX'; }
+        else if (type.includes('network')) { modalColor = '#ff4757'; modalGlow = 'rgba(255,71,87,0.15)'; iconClass = 'bx-network-chart'; badgeText = 'LIVE TRAFFIC DEEP'; }
+        else if (type.includes('threat')) { modalColor = '#ff4757'; modalGlow = 'rgba(255,71,87,0.15)'; iconClass = 'bx-error-alt'; badgeText = 'CRITICAL INTELLIGENCE'; }
+        else if (type.includes('forensic')) { modalColor = '#ff9f43'; modalGlow = 'rgba(255,159,67,0.15)'; iconClass = 'bx-line-chart'; badgeText = 'FORENSICS PORTAL'; }
+        else if (type.includes('law')) { modalColor = '#ff9f43'; modalGlow = 'rgba(255,159,67,0.15)'; iconClass = 'bxs-book-reader'; badgeText = 'PUBLIC LEGAL INDEX'; }
+        else if (type.includes('system')) { modalColor = '#00d4ff'; modalGlow = 'rgba(0,212,255,0.15)'; iconClass = 'bx-server'; badgeText = 'CORE SYSTEM CONTROL'; }
+
+        if (!document.getElementById('global-auth-styles')) {
+          const style = document.createElement('style');
+          style.id = 'global-auth-styles';
+          style.innerHTML = `
+            .g-auth-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(2, 6, 12, 0.88); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; z-index: 9998; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); padding-top: 50px; }
+            .g-auth-overlay.show { opacity: 1; pointer-events: auto; }
+            .g-auth-modal { position: relative; background: rgba(5,15,32,0.96); border-radius: 20px; padding: 48px 40px; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px) scale(0.95); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2); overflow: hidden; }
+            .g-auth-overlay.show .g-auth-modal { transform: translateY(0) scale(1); }
+            
+            /* Sweep Animation line */
+            .g-auth-modal::after { content: ''; position: absolute; top: 0; left: -100%; width: 200%; height: 3px; background: linear-gradient(90deg, transparent, var(--m-color, #00f5ff), transparent); animation: borderSweep 3.5s infinite linear; }
+            @keyframes borderSweep { 0% { left: -100%; } 100% { left: 100%; } }
+
+            .g-auth-badge { display: inline-flex; font-family: 'Share Tech Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--m-color, #00f5ff); background: var(--m-glow, rgba(0,245,255,0.06)); border: 1px solid var(--m-color, #00f5ff); padding: 4px 12px; border-radius: 4px; margin-bottom: 20px; text-transform: uppercase; text-shadow: 0 0 10px var(--m-glow); }
+
+            .g-auth-icon { width: 68px; height: 68px; margin: 0 auto 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 34px; border: 1px solid var(--m-color, #00f5ff); background: var(--m-glow, rgba(0,245,255,0.1)); color: var(--m-color, #00f5ff); box-shadow: 0 0 25px var(--m-glow, rgba(0,245,255,0.2)); transition: all 0.3s ease; }
+            .g-auth-modal:hover .g-auth-icon { transform: scale(1.05) rotate(5deg); }
+
+            .g-auth-modal h2 { font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+            .g-auth-modal p { color: #8fa0b5; font-size: 14px; margin-bottom: 28px; font-family: 'Exo 2', sans-serif; }
+            
+            .g-auth-input-wrap { position: relative; margin-bottom: 24px; }
+            .g-auth-modal input { width: 100%; padding: 16px 20px; background: rgba(1, 6, 15, 0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: #fff; font-size: 18px; font-family: 'Share Tech Mono', monospace; text-align: center; outline: none; transition: all 0.3s ease; letter-spacing: 4px; }
+            .g-auth-modal input:focus { border-color: var(--m-color, #00f5ff) !important; box-shadow: 0 0 20px var(--m-glow, rgba(0,245,255,0.15)), inset 0 0 10px rgba(0,0,0,0.5) !important; }
+            
+            .g-auth-modal button { width: 100%; padding: 16px; border-radius: 10px; font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); background: var(--m-glow, rgba(0,245,255,0.1)); color: var(--m-color, #00f5ff); border: 1px solid var(--m-color, #00f5ff); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+            .g-auth-modal button:hover { background: var(--m-color, #00f5ff) !important; color: #020810 !important; box-shadow: 0 0 25px var(--m-glow, rgba(0,245,255,0.45)) !important; transform: translateY(-1px); }
+            .g-auth-modal button:active { transform: translateY(1px) scale(0.98); }
+
+            .g-auth-error { display: none; color: #ff4757; font-size: 13px; margin-top: 16px; font-family: 'Share Tech Mono', monospace; letter-spacing: 1.5px; animation: shake 0.3s ease-in-out; }
+            @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+
+            .g-auth-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #8fa0b5; font-size: 24px; cursor: pointer; opacity: 0.5; transition: all 0.2s; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; }
+            .g-auth-close:hover { opacity: 1; color: var(--m-color, #00f5ff); background: rgba(255,255,255,0.05); }
+          `;
+          document.head.appendChild(style);
+        }
+
+        let overlay = document.getElementById('global-auth-overlay');
+        if (!overlay) {
+          overlay = document.createElement('div');
+          overlay.id = 'global-auth-overlay';
+          overlay.className = 'g-auth-overlay';
+          document.body.appendChild(overlay);
+        }
+
+        // Set CSS variables on overlay for the modal styles to pick up dynamically
+        overlay.style.setProperty('--m-color', modalColor);
+        overlay.style.setProperty('--m-glow', modalGlow);
+
+        overlay.innerHTML = `
+          <div class="g-auth-modal" style="border: 1px solid ${modalColor}; box-shadow: 0 20px 60px rgba(0,0,0,0.65), 0 0 40px ${modalGlow}, inset 0 1px 1px rgba(255,255,255,0.04);">
+            <button class="g-auth-close" onclick="document.getElementById('global-auth-overlay').classList.remove('show')">&times;</button>
+            <div class="g-auth-badge">${badgeText}</div>
+            <div class="g-auth-icon"><i class='bx ${iconClass}'></i></div>
+            <h2>${moduleName} Access</h2>
+            <p>Clearance level required to initialize terminal link</p>
+            <div class="g-auth-input-wrap">
+              <input type="password" id="gAuthInput" placeholder="CLEARANCE CODE" autocomplete="off">
+            </div>
+            <button id="gAuthBtn">AUTHENTICATE SYSTEM</button>
+            <div class="g-auth-error" id="gAuthError"><i class='bx bx-error-alt'></i> INVALID SECURITY CODE</div>
+          </div>
+        `;
+
+        setTimeout(() => overlay.classList.add('show'), 10);
+        const input = document.getElementById('gAuthInput');
+        setTimeout(() => input.focus(), 100);
+
+        const checkAuth = () => {
+          if (input.value === 'justice123') {
+            window.location.href = redirectUrl;
+          } else {
+            const errDiv = document.getElementById('gAuthError');
+            errDiv.style.display = 'block';
+            errDiv.style.animation = 'none';
+            void errDiv.offsetWidth; // trigger reflow
+            errDiv.style.animation = 'shake 0.3s ease-in-out';
+            input.value = '';
+          }
+        };
+        document.getElementById('gAuthBtn').addEventListener('click', checkAuth);
+        input.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAuth(); });
+      }
+    });
+  </script>
 </nav>
+
+  <!-- SECONDARY NAVBAR (Injected by Script) -->
+  <div class="secondary-navbar" id="secondaryNavbar" style="display: none;"></div>
 
 <div class="module-page-header">
   <a href="forensic.html" class="back-btn"><i class='bx bx-left-arrow-alt'></i> Back to Forensics</a>

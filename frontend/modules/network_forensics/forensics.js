@@ -135,10 +135,77 @@ function showAccessPopup(granted, callback) {
 }
 
 /* ========================= PASSWORD CHECK ========================= */
-function requestPassword(onSuccess) {
-  const password = prompt("🔐 Enter Security Password:");
-  if (password === SYSTEM_PASSWORD) { showAccessPopup(true, onSuccess); }
-  else { showAccessPopup(false); }
+function requestPassword(onSuccess, type) {
+  let modalColor = "var(--cyan)";
+  let modalGlow = "rgba(0,245,255,0.15)";
+  let iconClass = "bx-fingerprint";
+  let title = "Restricted Access";
+  
+  if (type === "face") { modalColor = "#b18fff"; modalGlow = "rgba(177,143,255,0.15)"; iconClass = "bx-scan"; title = "Biometric Access"; }
+  else if (type === "forensic") { modalColor = "var(--green)"; modalGlow = "rgba(0,255,136,0.15)"; iconClass = "bx-search-alt"; title = "Forensics Access"; }
+  else if (type === "network") { modalColor = "#00aaff"; modalGlow = "rgba(0,170,255,0.15)"; iconClass = "bx-folder"; title = "Case Control"; }
+  else if (type === "forensics_db") { modalColor = "#ff0055"; modalGlow = "rgba(255,0,85,0.15)"; iconClass = "bx-radar"; title = "Network Forensics"; }
+  else if (type === "chain_of_custody") { modalColor = "#ffd700"; modalGlow = "rgba(255,215,0,0.15)"; iconClass = "bx-link"; title = "Chain of Custody"; }
+  else if (type === "threat_intel") { modalColor = "#00d4ff"; modalGlow = "rgba(0,212,255,0.15)"; iconClass = "bx-shield-quarter"; title = "Threat Intelligence"; }
+  else if (type === "law") { modalColor = "#ff9f43"; modalGlow = "rgba(255,159,67,0.15)"; iconClass = "bxs-book-reader"; title = "Legal Education"; }
+  else if (type === "capture") { modalColor = "#00f5ff"; modalGlow = "rgba(0,245,255,0.15)"; iconClass = "bx-wifi"; title = "Live Capture"; }
+  else if (type === "analyzer") { modalColor = "#b18fff"; modalGlow = "rgba(177,143,255,0.15)"; iconClass = "bx-file-find"; title = "Packet Analyzer"; }
+  else if (type === "threat") { modalColor = "#ff4757"; modalGlow = "rgba(255,71,87,0.15)"; iconClass = "bx-error-alt"; title = "Threat Intel"; }
+  else if (type === "forensics") { modalColor = "#ff9f43"; modalGlow = "rgba(255,159,67,0.15)"; iconClass = "bx-line-chart"; title = "Traffic Analysis"; }
+
+  if (!document.getElementById("global-password-styles")) {
+    const style = document.createElement("style");
+    style.id = "global-password-styles";
+    style.innerHTML = `
+      .global-password-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(4, 9, 20, 0.9); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+      .global-password-overlay.show { opacity: 1; pointer-events: auto; }
+      .global-password-modal { background: rgba(5,20,40,0.95); border: 1px solid var(--modal-color, #00f5ff); border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 30px var(--modal-glow, rgba(0,245,255,0.15)); transform: translateY(20px) scale(0.95); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+      .global-password-overlay.show .global-password-modal { transform: translateY(0) scale(1); }
+      .global-password-modal .modal-icon { width: 64px; height: 64px; margin: 0 auto 20px; background: var(--modal-glow, rgba(0,245,255,0.1)); color: var(--modal-color, #00f5ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; border: 1px solid var(--modal-color, #00f5ff); box-shadow: 0 0 20px var(--modal-glow, rgba(0,245,255,0.2)); }
+      .global-password-modal h2 { font-family: 'Rajdhani', sans-serif; font-size: 24px; color: #fff; margin-bottom: 8px; }
+      .global-password-modal .modal-sub { color: #8899aa; font-size: 14px; margin-bottom: 24px; }
+      .global-password-modal input { width: 100%; padding: 14px 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 16px; font-family: 'Share Tech Mono', monospace; text-align: center; outline: none; transition: border-color 0.3s; margin-bottom: 20px; }
+      .global-password-modal input:focus { border-color: var(--modal-color, #00f5ff); }
+      .global-password-modal .access-btn { width: 100%; padding: 14px; background: var(--modal-glow, rgba(0,245,255,0.15)); color: var(--modal-color, #00f5ff); border: 1px solid var(--modal-color, #00f5ff); border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; }
+      .global-password-modal .access-btn:hover { background: var(--modal-color, #00f5ff); color: #000; }
+      .global-password-modal .access-error { display: none; color: #ff4757; font-size: 13px; margin-top: 14px; }
+    `;
+    document.head.appendChild(style);
+  }
+
+  const overlay = document.createElement("div");
+  overlay.className = "global-password-overlay";
+  overlay.innerHTML = `
+    <div class="global-password-modal" style="--modal-color:${modalColor}; --modal-glow:${modalGlow}">
+      <div class="modal-icon"><i class='bx ${iconClass}'></i></div>
+      <h2>${title}</h2>
+      <p class="modal-sub">Enter the access code to unlock this module</p>
+      <input type="password" id="globalAccessCode" placeholder="Enter Access Code" autocomplete="off">
+      <button class="access-btn" id="globalAccessBtn"><i class='bx bx-log-in'></i> Unlock Module</button>
+      <p class="access-error" id="globalAccessError"><i class='bx bx-error-circle'></i> Incorrect access code. Try again.</p>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  setTimeout(() => overlay.classList.add("show"), 10);
+  
+  const input = overlay.querySelector("#globalAccessCode");
+  const btn = overlay.querySelector("#globalAccessBtn");
+  const err = overlay.querySelector("#globalAccessError");
+  input.focus();
+
+  function attempt() {
+    if (input.value === "justice123") {
+      overlay.classList.remove("show");
+      setTimeout(() => { overlay.remove(); showAccessPopup(true, onSuccess); }, 300);
+    } else {
+      err.style.display = "block";
+      input.value = "";
+      input.focus();
+    }
+  }
+
+  btn.addEventListener("click", attempt);
+  input.addEventListener("keypress", (e) => { if(e.key === "Enter") attempt(); });
 }
 
 /* =====================================================================
@@ -338,7 +405,7 @@ function initScanButtons() {
       const href = btn.getAttribute("href");
 
       function afterScan() {
-        requestPassword(() => { if (href) window.location.href = href; });
+        requestPassword(() => { if (href) window.location.href = href; }, type);
       }
 
       switch (type) {

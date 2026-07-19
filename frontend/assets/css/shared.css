@@ -297,3 +297,225 @@ body::after {
   .page-title-block { padding:14px 18px 8px; }
   .page-heading { font-size:28px; }
 }
+/* ── NAVBAR OVERRIDES (Spacious & Free) ── */
+.navbar {
+  padding: 24px 48px !important;
+  background: rgba(2, 8, 16, 0.85) !important;
+  backdrop-filter: blur(28px) !important;
+}
+.nav-left { gap: 24px !important; }
+.logo { height: 48px !important; width: 48px !important; border-radius: 12px !important; }
+.brand { font-size: 20px !important; }
+.nav-center { gap: 16px !important; }
+.nav-link { padding: 10px 20px !important; font-size: 14px !important; border-radius: 8px !important; }
+.nav-right { gap: 28px !important; }
+.menu-trigger { padding: 8px 12px !important; font-size: 24px !important; border-radius: 8px !important; }
+
+/* ── SECONDARY NAVBAR (Module Specific Actions) ── */
+.secondary-navbar {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: rgba(10, 20, 35, 0.85);
+  border: 1px solid var(--border-bright, rgba(0,245,255,0.4));
+  border-radius: 12px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0,245,255,0.1);
+  z-index: 990;
+  animation: slideDown 0.4s ease-out;
+}
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+.secondary-navbar .sec-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(0,245,255,0.05);
+  color: var(--cyan, #00f5ff);
+  border: 1px solid rgba(0,245,255,0.2);
+  border-radius: 6px;
+  font-family: var(--font-head, sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+.secondary-navbar .sec-btn:hover {
+  background: rgba(0,245,255,0.15);
+  border-color: var(--cyan, #00f5ff);
+  box-shadow: 0 0 15px rgba(0,245,255,0.2);
+  transform: translateY(-1px);
+}
+.secondary-navbar .sec-btn.danger {
+  color: #ff4757;
+  border-color: rgba(255,71,87,0.2);
+  background: rgba(255,71,87,0.05);
+}
+.secondary-navbar .sec-btn.danger:hover {
+  background: rgba(255,71,87,0.15);
+  border-color: #ff4757;
+  box-shadow: 0 0 15px rgba(255,71,87,0.2);
+}
+
+/* ── NAVBAR FIXED & DE-CRAMPED ── */
+body {
+  padding-top: 85px !important;
+}
+.navbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  padding: 16px 40px !important;
+  background: rgba(2, 8, 16, 0.95) !important;
+  backdrop-filter: blur(28px) !important;
+  z-index: 9999 !important;
+  box-sizing: border-box !important;
+}
+.nav-left { gap: 24px !important; }
+.logo { height: 42px !important; width: 42px !important; border-radius: 10px !important; }
+.brand { font-size: 18px !important; }
+.nav-center { 
+  display: flex !important; 
+  gap: 12px !important; 
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+}
+.nav-link { 
+  padding: 8px 14px !important; 
+  font-size: 14px !important; 
+  border-radius: 8px !important; 
+  white-space: nowrap !important;
+}
+.nav-right { gap: 24px !important; }
+
+/* Secondary Navbar position adjustment */
+.secondary-navbar {
+  position: fixed !important;
+  top: 75px !important; 
+  right: 40px !important;
+  z-index: 9998 !important;
+}
+
+/* ── ULTIMATE PREMIUM FLOATING NAVBAR & CYBER UI ── */
+body {
+  padding-top: 110px !important;
+}
+
+.navbar {
+  position: fixed !important;
+  top: 16px !important;
+  left: 24px !important;
+  right: 24px !important;
+  width: calc(100% - 48px) !important;
+  padding: 12px 32px !important;
+  background: rgba(3, 10, 25, 0.75) !important;
+  border: 1px solid rgba(0, 245, 255, 0.12) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(20px) !important;
+  z-index: 9999 !important;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05) !important;
+  box-sizing: border-box !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.navbar:hover {
+  border-color: rgba(0, 245, 255, 0.25) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 245, 255, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.08) !important;
+}
+
+.nav-left { 
+  gap: 16px !important; 
+}
+
+.logo { 
+  height: 40px !important; 
+  width: 40px !important; 
+  border-radius: 10px !important; 
+  border: 1px solid rgba(0, 245, 255, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.navbar:hover .logo {
+  transform: rotate(5deg) scale(1.05);
+  border-color: rgba(0, 245, 255, 0.6) !important;
+}
+
+.brand { 
+  font-size: 18px !important; 
+  letter-spacing: 1.5px !important;
+}
+
+.brand-sub {
+  font-size: 8px !important;
+  letter-spacing: 1px !important;
+  opacity: 0.7;
+}
+
+.nav-center { 
+  display: flex !important; 
+  gap: 6px !important; 
+  align-items: center !important;
+}
+
+.nav-link { 
+  padding: 8px 16px !important; 
+  font-size: 13px !important; 
+  font-weight: 600 !important;
+  color: var(--text-dim) !important;
+  border-radius: 10px !important; 
+  border: 1px solid transparent !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap !important;
+  background: transparent !important;
+}
+
+.nav-link:hover {
+  color: #fff !important;
+  background: rgba(0, 245, 255, 0.06) !important;
+  border-color: rgba(0, 245, 255, 0.15) !important;
+  transform: translateY(-1px);
+}
+
+.nav-link.active {
+  color: var(--cyan, #00f5ff) !important;
+  background: rgba(0, 245, 255, 0.08) !important;
+  border-color: rgba(0, 245, 255, 0.3) !important;
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.05);
+}
+
+.nav-link.active::before {
+  display: none !important; /* Remove the old bottom line styling */
+}
+
+.nav-right { 
+  gap: 16px !important; 
+}
+
+/* Secondary Navbar position adjustment */
+.secondary-navbar {
+  position: fixed !important;
+  top: 96px !important; 
+  right: 28px !important;
+  z-index: 9998 !important;
+  background: rgba(3, 10, 25, 0.8) !important;
+  border: 1px solid rgba(0, 245, 255, 0.15) !important;
+  border-radius: 12px !important;
+  padding: 6px 12px !important;
+  backdrop-filter: blur(16px) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+}
+
+.secondary-navbar .sec-btn {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  border-radius: 8px !important;
+}
