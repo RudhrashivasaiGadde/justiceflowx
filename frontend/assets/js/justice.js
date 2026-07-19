@@ -776,6 +776,44 @@ function initHoverSound() {
 }
 
 /* ========================= SCAN BUTTONS — ROUTE BY TYPE ========================= */
+
+function showForensicsDbOverlay(onComplete) {
+  const overlay = document.createElement("div");
+  overlay.className = "scan-overlay-full";
+  overlay.innerHTML = `
+    <div class="scan-animation-wrap">
+      <div class="scan-title-overlay" style="color:#ff0055">INITIALIZING DEEP PACKET INSPECTION</div>
+      <div class="loader-radar" style="margin: 30px auto;"></div>
+      <div style="text-align:center;font-family:'Share Tech Mono',monospace;color:rgba(255,0,85,0.7)">
+        ESTABLISHING FORENSIC UPLINK...
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  setTimeout(() => overlay.classList.add("show"), 50);
+  setTimeout(() => overlay.classList.remove("show"), 2800);
+  setTimeout(() => { overlay.remove(); onComplete(); }, 3200);
+}
+
+
+function showChainOfCustodyOverlay(onComplete) {
+  const overlay = document.createElement("div");
+  overlay.className = "scan-overlay-full";
+  overlay.innerHTML = `
+    <div class="scan-animation-wrap">
+      <div class="scan-title-overlay" style="color:#ffd700">VERIFYING IMMUTABLE LEDGER</div>
+      <div style="font-size: 60px; color: #ffd700; margin: 30px auto; animation: pulse 1s infinite;"><i class='bx bx-link'></i></div>
+      <div style="text-align:center;font-family:'Share Tech Mono',monospace;color:rgba(255,215,0,0.7)">
+        AUTHENTICATING AGENT CREDENTIALS...
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  setTimeout(() => overlay.classList.add("show"), 50);
+  setTimeout(() => overlay.classList.remove("show"), 2800);
+  setTimeout(() => { overlay.remove(); onComplete(); }, 3200);
+}
+
 function initScanButtons() {
   document.querySelectorAll(".scan-btn").forEach(btn => {
     btn.addEventListener("click", e => {
@@ -788,10 +826,11 @@ function initScanButtons() {
       }
 
       switch (type) {
-        case "finger":   showFingerprintOverlay(afterScan); break;
-        case "face":     showFacialOverlay(afterScan);      break;
+                case "face":     showFacialOverlay(afterScan);      break;
         case "forensic": showForensicsOverlay(afterScan);   break;
         case "network":  showNetworkOverlay(afterScan);     break;
+          case "forensics_db": showForensicsDbOverlay(afterScan);   break;
+          case "chain_of_custody": showChainOfCustodyOverlay(afterScan);   break;
         default:         showFingerprintOverlay(afterScan); break;
       }
     });
