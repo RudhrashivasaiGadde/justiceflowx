@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <link rel="stylesheet" href="../../assets/css/shared.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Legal Education - JusticeFlowX</title>
@@ -301,93 +302,156 @@
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.92);
-      z-index: 9999;
+      background: rgba(2, 6, 12, 0.88);
+      backdrop-filter: blur(12px);
+      z-index: 9998;
       justify-content: center;
       align-items: center;
-      transition: opacity 0.4s ease;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      padding-top: 50px;
     }
 
     .password-modal {
-      background: #0d0d0d;
-      border: 2px solid rgba(255,159,67,0.5);
+      position: relative;
+      background: rgba(5,15,32,0.96);
+      border: 1px solid #ff9f43;
       border-radius: 20px;
-      padding: 40px 36px;
-      width: 380px;
-      max-width: 90vw;
+      padding: 48px 40px;
+      width: 90%;
+      max-width: 420px;
       text-align: center;
-      box-shadow: 0 0 60px rgba(255,159,67,0.15);
-      animation: slideUp 0.5s ease;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.65), 0 0 40px rgba(255,159,67,0.15), inset 0 1px 1px rgba(255,255,255,0.04);
+      transform: translateY(0) scale(1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+      overflow: hidden;
+    }
+
+    .password-modal::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 200%; height: 3px;
+      background: linear-gradient(90deg, transparent, #ff9f43, transparent);
+      animation: borderSweep 3.5s infinite linear;
+    }
+    @keyframes borderSweep { 0% { left: -100%; } 100% { left: 100%; } }
+
+    .g-auth-header {
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 16px 24px;
+      margin: -48px -40px 30px -40px;
+      background: rgba(1, 6, 15, 0.4);
+    }
+    .g-auth-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #ff9f43;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .g-auth-close {
+      background: rgba(255,255,255,0.03) !important;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      color: #8fa0b5 !important;
+      font-size: 18px !important;
+      cursor: pointer;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 28px !important;
+      height: 28px !important;
+      border-radius: 6px !important;
+      transition: all 0.2s;
+      padding: 0 !important;
+    }
+    .g-auth-close:hover {
+      background: rgba(255,71,87,0.1) !important;
+      border-color: #ff4757 !important;
+      color: #ff4757 !important;
     }
 
     .password-modal .modal-icon {
-      width: 70px; height: 70px;
-      border-radius: 50%;
-      background: rgba(255,159,67,0.12);
-      border: 2px solid rgba(255,159,67,0.3);
-      display: flex; align-items: center; justify-content: center;
+      width: 68px; height: 68px;
       margin: 0 auto 20px;
-      font-size: 2rem;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 34px;
+      border: 1px solid #ff9f43;
+      background: rgba(255,159,67,0.1);
       color: #ff9f43;
+      box-shadow: 0 0 25px rgba(255,159,67,0.2);
+      transition: all 0.3s ease;
     }
 
     .password-modal h2 {
-      color: #ff9f43;
-      font-size: 1.4rem;
-      margin: 0 0 6px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .password-modal .modal-sub {
-      color: #888;
-      font-size: 0.9rem;
-      margin-bottom: 22px;
+      color: #8fa0b5;
+      font-size: 14px;
+      margin-bottom: 28px;
+      font-family: 'Exo 2', sans-serif;
     }
 
     .password-modal input {
       width: 100%;
-      padding: 14px 16px;
-      background: rgba(255,159,67,0.06);
-      border: 1px solid rgba(255,159,67,0.4);
+      padding: 16px 20px;
+      background: rgba(1, 6, 15, 0.6);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 10px;
       color: #fff;
-      font-size: 1.05rem;
+      font-size: 18px;
+      font-family: 'Share Tech Mono', monospace;
       text-align: center;
-      letter-spacing: 3px;
       outline: none;
-      font-family: 'Inter', sans-serif;
-      transition: border-color 0.3s;
-      margin-bottom: 14px;
+      transition: all 0.3s ease;
+      letter-spacing: 4px;
+      margin-bottom: 24px;
     }
 
     .password-modal input:focus {
-      border-color: #ff9f43;
-      box-shadow: 0 0 12px rgba(255,159,67,0.2);
+      border-color: #ff9f43 !important;
+      box-shadow: 0 0 20px rgba(255,159,67,0.15), inset 0 0 10px rgba(0,0,0,0.5) !important;
     }
 
     .password-modal .access-btn {
-      width: 100%;
-      padding: 13px;
-      background: linear-gradient(135deg, #ff9f43, #ff6b00);
-      color: #000;
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: all 0.3s;
+      width: 100% !important;
+      padding: 16px !important;
+      border-radius: 10px !important;
+      font-family: 'Rajdhani', sans-serif !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 1px !important;
+      cursor: pointer !important;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      background: rgba(255,159,67,0.1) !important;
+      color: #ff9f43 !important;
+      border: 1px solid #ff9f43 !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
     }
 
     .password-modal .access-btn:hover {
-      background: linear-gradient(135deg, #ffb169, #ff8c00);
-      box-shadow: 0 4px 20px rgba(255,159,67,0.3);
+      background: #ff9f43 !important;
+      color: #020810 !important;
+      box-shadow: 0 0 25px rgba(255,159,67,0.45) !important;
+      transform: translateY(-1px);
     }
 
     .password-modal .access-error {
       display: none;
-      color: #ff4444;
-      font-size: 0.85rem;
-      margin-top: 12px;
+      color: #ff4757;
+      font-size: 13px;
+      margin-top: 16px;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 1.5px;
+      animation: shake 0.3s ease-in-out;
     }
   </style>
 </head>
@@ -399,12 +463,17 @@
   <!-- PASSWORD ACCESS OVERLAY -->
   <div class="password-overlay" id="passwordOverlay">
     <div class="password-modal">
-      <div class="modal-icon"><i class='bx bx-lock-alt'></i></div>
-      <h2>Restricted Access</h2>
-      <p class="modal-sub">Enter the access code to open the Legal Education Module</p>
-      <input type="password" id="accessCodeInput" placeholder="Enter Access Code" autocomplete="off">
-      <button class="access-btn" onclick="attemptAccess()"><i class='bx bx-log-in'></i> Unlock Module</button>
-      <p class="access-error" id="accessError"><i class='bx bx-error-circle'></i> Incorrect access code. Try again.</p>
+      <div class="g-auth-header">
+        <span class="g-auth-title">Legal Educator Terminal</span>
+        <button class="g-auth-close" onclick="document.getElementById('passwordOverlay').style.display='none'">&times;</button>
+      </div>
+      <div class="g-auth-badge" style="color: #ff9f43; border-color: #ff9f43; background: rgba(255,159,67,0.06);">PUBLIC LEGAL INDEX</div>
+      <div class="password-modal modal-icon"><i class='bx bxs-book-reader'></i></div>
+      <h2>Authentication</h2>
+      <p class="modal-sub">Clearance level required to initialize terminal link</p>
+      <input type="password" id="accessCodeInput" placeholder="CLEARANCE CODE" autocomplete="off">
+      <button class="access-btn" onclick="attemptAccess()">AUTHENTICATE SYSTEM</button>
+      <p class="access-error" id="accessError"><i class='bx bx-error-alt'></i> INVALID SECURITY CODE</p>
     </div>
   </div>
 

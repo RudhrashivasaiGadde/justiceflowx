@@ -136,69 +136,119 @@ function showAccessPopup(granted, callback) {
 
 /* ========================= PASSWORD CHECK ========================= */
 function requestPassword(onSuccess, type) {
-  let modalColor = "var(--cyan)";
-  let modalGlow = "rgba(0,245,255,0.15)";
-  let iconClass = "bx-fingerprint";
-  let title = "Restricted Access";
+  let modalColor = '#00f5ff';
+  let modalGlow = 'rgba(0,245,255,0.15)';
+  let iconClass = 'bx-shield-quarter';
+  let badgeText = 'SECURE CHANNEL';
+  let title = 'Restricted Access';
   
-  if (type === "face") { modalColor = "#b18fff"; modalGlow = "rgba(177,143,255,0.15)"; iconClass = "bx-scan"; title = "Biometric Access"; }
-  else if (type === "forensic") { modalColor = "var(--green)"; modalGlow = "rgba(0,255,136,0.15)"; iconClass = "bx-search-alt"; title = "Forensics Access"; }
-  else if (type === "network") { modalColor = "#00aaff"; modalGlow = "rgba(0,170,255,0.15)"; iconClass = "bx-folder"; title = "Case Control"; }
-  else if (type === "forensics_db") { modalColor = "#ff0055"; modalGlow = "rgba(255,0,85,0.15)"; iconClass = "bx-radar"; title = "Network Forensics"; }
-  else if (type === "chain_of_custody") { modalColor = "#ffd700"; modalGlow = "rgba(255,215,0,0.15)"; iconClass = "bx-link"; title = "Chain of Custody"; }
-  else if (type === "threat_intel") { modalColor = "#00d4ff"; modalGlow = "rgba(0,212,255,0.15)"; iconClass = "bx-shield-quarter"; title = "Threat Intelligence"; }
-  else if (type === "law") { modalColor = "#ff9f43"; modalGlow = "rgba(255,159,67,0.15)"; iconClass = "bxs-book-reader"; title = "Legal Education"; }
+  if (type === "criminal") { modalColor = '#ff2b5e'; modalGlow = 'rgba(255,43,94,0.15)'; iconClass = 'bx-user'; badgeText = 'CLASS-A RESTRICTED'; title = 'Criminal Database'; }
+  else if (type === "case" || type === "network") { modalColor = '#00ff88'; modalGlow = 'rgba(0,255,136,0.15)'; iconClass = 'bx-folder'; badgeText = 'ACTIVE CASE CONTROL'; title = 'Case Control'; }
+  else if (type === "evidence") { modalColor = '#ffb800'; modalGlow = 'rgba(255,184,0,0.15)'; iconClass = 'bx-archive'; badgeText = 'CHAIN OF CUSTODY'; title = 'Evidence Vault'; }
+  else if (type === "biometrics" || type === "face") { modalColor = '#7b2fff'; modalGlow = 'rgba(123,47,255,0.15)'; iconClass = 'bx-fingerprint'; badgeText = 'BIOMETRIC INDEX'; title = 'Biometric Access'; }
+  else if (type === "network_forensics" || type === "forensics_db") { modalColor = '#ff4757'; modalGlow = 'rgba(255,71,87,0.15)'; iconClass = 'bx-network-chart'; badgeText = 'LIVE TRAFFIC DEEP'; title = 'Network Forensics'; }
+  else if (type === "threat_intel" || type === "threat") { modalColor = '#ff4757'; modalGlow = 'rgba(255,71,87,0.15)'; iconClass = 'bx-error-alt'; badgeText = 'CRITICAL INTELLIGENCE'; title = 'Threat Intelligence'; }
+  else if (type === "forensics") { modalColor = '#ff9f43'; modalGlow = 'rgba(255,159,67,0.15)'; iconClass = 'bx-line-chart'; badgeText = 'FORENSICS PORTAL'; title = 'Traffic Analysis'; }
+  else if (type === "law") { modalColor = '#ff9f43'; modalGlow = 'rgba(255,159,67,0.15)'; iconClass = 'bxs-book-reader'; badgeText = 'PUBLIC LEGAL INDEX'; title = 'Legal Educator'; }
+  else if (type === "system") { modalColor = '#00d4ff'; modalGlow = 'rgba(0,212,255,0.15)'; iconClass = 'bx-server'; badgeText = 'CORE SYSTEM CONTROL'; title = 'Core System Control'; }
+  else if (type === "capture") { modalColor = '#00f5ff'; modalGlow = 'rgba(0,245,255,0.15)'; iconClass = 'bx-wifi'; badgeText = 'LIVE CAPTURE'; title = 'Live Capture'; }
+  else if (type === "analyzer") { modalColor = '#b18fff'; modalGlow = 'rgba(177,143,255,0.15)'; iconClass = 'bx-file-find'; badgeText = 'PACKET ANALYZER'; title = 'Packet Analyzer'; }
 
-  if (!document.getElementById("global-password-styles")) {
-    const style = document.createElement("style");
-    style.id = "global-password-styles";
+  if (!document.getElementById('global-auth-styles')) {
+    const style = document.createElement('style');
+    style.id = 'global-auth-styles';
     style.innerHTML = `
-      .global-password-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(4, 9, 20, 0.9); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-      .global-password-overlay.show { opacity: 1; pointer-events: auto; }
-      .global-password-modal { background: rgba(5,20,40,0.95); border: 1px solid var(--modal-color, #00f5ff); border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 30px var(--modal-glow, rgba(0,245,255,0.15)); transform: translateY(20px) scale(0.95); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-      .global-password-overlay.show .global-password-modal { transform: translateY(0) scale(1); }
-      .global-password-modal .modal-icon { width: 64px; height: 64px; margin: 0 auto 20px; background: var(--modal-glow, rgba(0,245,255,0.1)); color: var(--modal-color, #00f5ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; border: 1px solid var(--modal-color, #00f5ff); box-shadow: 0 0 20px var(--modal-glow, rgba(0,245,255,0.2)); }
-      .global-password-modal h2 { font-family: 'Rajdhani', sans-serif; font-size: 24px; color: #fff; margin-bottom: 8px; }
-      .global-password-modal .modal-sub { color: #8899aa; font-size: 14px; margin-bottom: 24px; }
-      .global-password-modal input { width: 100%; padding: 14px 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 16px; font-family: 'Share Tech Mono', monospace; text-align: center; outline: none; transition: border-color 0.3s; margin-bottom: 20px; }
-      .global-password-modal input:focus { border-color: var(--modal-color, #00f5ff); }
-      .global-password-modal .access-btn { width: 100%; padding: 14px; background: var(--modal-glow, rgba(0,245,255,0.15)); color: var(--modal-color, #00f5ff); border: 1px solid var(--modal-color, #00f5ff); border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; }
-      .global-password-modal .access-btn:hover { background: var(--modal-color, #00f5ff); color: #000; }
-      .global-password-modal .access-error { display: none; color: #ff4757; font-size: 13px; margin-top: 14px; }
+      .g-auth-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(2, 6, 12, 0.88); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; z-index: 9998; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); padding-top: 50px; }
+      .g-auth-overlay.show { opacity: 1; pointer-events: auto; }
+      .g-auth-modal { position: relative; background: rgba(5,15,32,0.96); border-radius: 20px; padding: 48px 40px; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px) scale(0.95); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2); overflow: hidden; }
+      .g-auth-overlay.show .g-auth-modal { transform: translateY(0) scale(1); }
+      
+      .g-auth-modal::after { content: ''; position: absolute; top: 0; left: -100%; width: 200%; height: 3px; background: linear-gradient(90deg, transparent, var(--m-color, #00f5ff), transparent); animation: borderSweep 3.5s infinite linear; }
+      @keyframes borderSweep { 0% { left: -100%; } 100% { left: 100%; } }
+
+      .g-auth-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 16px 24px; margin: -48px -40px 30px -40px; background: rgba(1, 6, 15, 0.4); }
+      .g-auth-title { font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; color: var(--m-color, #00f5ff); text-transform: uppercase; letter-spacing: 1.5px; }
+      .g-auth-close { background: rgba(255,255,255,0.03) !important; border: 1px solid rgba(255,255,255,0.08) !important; color: #8fa0b5 !important; font-size: 18px !important; cursor: pointer; display: flex !important; align-items: center; justify-content: center; width: 28px !important; height: 28px !important; border-radius: 6px !important; transition: all 0.2s; padding: 0 !important; }
+      .g-auth-close:hover { background: rgba(255,71,87,0.1) !important; border-color: #ff4757 !important; color: #ff4757 !important; }
+
+      .g-auth-badge { display: inline-flex; font-family: 'Share Tech Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--m-color, #00f5ff); background: var(--m-glow, rgba(0,245,255,0.06)); border: 1px solid var(--m-color, #00f5ff); padding: 4px 12px; border-radius: 4px; margin-bottom: 20px; text-transform: uppercase; text-shadow: 0 0 10px var(--m-glow); }
+
+      .g-auth-icon { width: 68px; height: 68px; margin: 0 auto 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 34px; border: 1px solid var(--m-color, #00f5ff); background: var(--m-glow, rgba(0,245,255,0.1)); color: var(--m-color, #00f5ff); box-shadow: 0 0 25px var(--m-glow, rgba(0,245,255,0.2)); transition: all 0.3s ease; }
+      .g-auth-modal:hover .g-auth-icon { transform: scale(1.05) rotate(5deg); }
+
+      .g-auth-modal h2 { font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+      .g-auth-modal p { color: #8fa0b5; font-size: 14px; margin-bottom: 28px; font-family: 'Exo 2', sans-serif; }
+      
+      .g-auth-input-wrap { position: relative; margin-bottom: 24px; }
+      .g-auth-modal input { width: 100%; padding: 16px 20px; background: rgba(1, 6, 15, 0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: #fff; font-size: 18px; font-family: 'Share Tech Mono', monospace; text-align: center; outline: none; transition: all 0.3s ease; letter-spacing: 4px; }
+      .g-auth-modal input:focus { border-color: var(--m-color, #00f5ff) !important; box-shadow: 0 0 20px var(--m-glow, rgba(0,245,255,0.15)), inset 0 0 10px rgba(0,0,0,0.5) !important; }
+      
+      .g-auth-submit-btn { width: 100% !important; padding: 16px !important; border-radius: 10px !important; font-family: 'Rajdhani', sans-serif !important; font-size: 16px !important; font-weight: 700 !important; text-transform: uppercase !important; letter-spacing: 1px !important; cursor: pointer !important; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; background: var(--m-glow, rgba(0,245,255,0.1)) !important; color: var(--m-color, #00f5ff) !important; border: 1px solid var(--m-color, #00f5ff) !important; box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important; }
+      .g-auth-submit-btn:hover { background: var(--m-color, #00f5ff) !important; color: #020810 !important; box-shadow: 0 0 25px var(--m-glow, rgba(0,245,255,0.45)) !important; transform: translateY(-1px); }
+      .g-auth-submit-btn:active { transform: translateY(1px) scale(0.98); }
+
+      .g-auth-error { display: none; color: #ff4757; font-size: 13px; margin-top: 16px; font-family: 'Share Tech Mono', monospace; letter-spacing: 1.5px; animation: shake 0.3s ease-in-out; }
+      @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
     `;
     document.head.appendChild(style);
   }
 
-  const overlay = document.createElement("div");
-  overlay.className = "global-password-overlay";
+  let overlay = document.getElementById('global-auth-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'global-auth-overlay';
+    overlay.className = 'g-auth-overlay';
+    document.body.appendChild(overlay);
+  }
+
+  overlay.style.setProperty('--m-color', modalColor);
+  overlay.style.setProperty('--m-glow', modalGlow);
+
   overlay.innerHTML = `
-    <div class="global-password-modal" style="--modal-color:${modalColor}; --modal-glow:${modalGlow}">
-      <div class="modal-icon"><i class='bx ${iconClass}'></i></div>
-      <h2>${title}</h2>
-      <p class="modal-sub">Enter the access code to unlock this module</p>
-      <input type="password" id="globalAccessCode" placeholder="Enter Access Code" autocomplete="off">
-      <button class="access-btn" id="globalAccessBtn"><i class='bx bx-log-in'></i> Unlock Module</button>
-      <p class="access-error" id="globalAccessError"><i class='bx bx-error-circle'></i> Incorrect access code. Try again.</p>
+    <div class="g-auth-modal" style="border: 1px solid ${modalColor}; box-shadow: 0 20px 60px rgba(0,0,0,0.65), 0 0 40px ${modalGlow}, inset 0 1px 1px rgba(255,255,255,0.04);">
+      <div class="g-auth-header">
+        <span class="g-auth-title">${title} Access</span>
+        <button class="g-auth-close" onclick="document.getElementById('global-auth-overlay').classList.remove('show')">&times;</button>
+      </div>
+      <div class="g-auth-badge">${badgeText}</div>
+      <div class="g-auth-icon"><i class='bx ${iconClass}'></i></div>
+      <h2>Authentication</h2>
+      <p>Clearance level required to initialize terminal link</p>
+      <div class="g-auth-input-wrap">
+        <input type="password" id="gAuthInput" placeholder="CLEARANCE CODE" autocomplete="off">
+      </div>
+      <button class="g-auth-submit-btn" id="gAuthBtn">AUTHENTICATE SYSTEM</button>
+      <div class="g-auth-error" id="gAuthError"><i class='bx bx-error-alt'></i> INVALID SECURITY CODE</div>
     </div>
   `;
-  document.body.appendChild(overlay);
-  setTimeout(() => overlay.classList.add("show"), 10);
-  
-  const input = overlay.querySelector("#globalAccessCode");
-  const btn = overlay.querySelector("#globalAccessBtn");
-  const err = overlay.querySelector("#globalAccessError");
-  input.focus();
 
-  function attempt() {
-    if (input.value === "justice123") {
-      overlay.classList.remove("show");
+  document.getElementById('gAuthInput').addEventListener('focus', function() { this.style.borderColor = modalColor; });
+  document.getElementById('gAuthInput').addEventListener('blur', function() { this.style.borderColor = 'rgba(255,255,255,0.1)'; });
+
+  const btn = document.getElementById('gAuthBtn');
+  btn.addEventListener('mouseenter', function() { this.style.background = modalColor; this.style.color = '#000'; });
+  btn.addEventListener('mouseleave', function() { this.style.background = modalGlow; this.style.color = modalColor; });
+
+  setTimeout(() => overlay.classList.add('show'), 10);
+  const input = document.getElementById('gAuthInput');
+  setTimeout(() => input.focus(), 100);
+
+  const checkAuth = () => {
+    if (input.value === 'justice123') {
+      overlay.classList.remove('show');
       setTimeout(() => { overlay.remove(); showAccessPopup(true, onSuccess); }, 300);
     } else {
-      err.style.display = "block";
-      input.value = "";
-      input.focus();
+      const errDiv = document.getElementById('gAuthError');
+      errDiv.style.display = 'block';
+      errDiv.style.animation = 'none';
+      void errDiv.offsetWidth; // trigger reflow
+      errDiv.style.animation = 'shake 0.3s ease-in-out';
+      input.value = '';
     }
-  }
+  };
+  btn.addEventListener('click', checkAuth);
+  input.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAuth(); });
+}
 
   btn.addEventListener("click", attempt);
   input.addEventListener("keypress", (e) => { if(e.key === "Enter") attempt(); });
