@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: justiceflowx-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: securepassword123
+      POSTGRES_DB: justiceflowx
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d justiceflowx"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: justiceflowx-backend
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://admin:securepassword123@db:5432/justiceflowx
+      - THREAT_INTEL_MOCK_MODE=true
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app  # Hot-reloading for local dev
+
+  frontend:
+    image: nginx:alpine
+    container_name: justiceflowx-frontend
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+
+volumes:
+  postgres_data:
