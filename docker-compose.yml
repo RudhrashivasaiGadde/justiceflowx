@@ -25,7 +25,10 @@ services:
     restart: always
     environment:
       - DATABASE_URL=postgresql://admin:securepassword123@db:5432/justiceflowx
-      - THREAT_INTEL_MOCK_MODE=true
+      - THREAT_INTEL_MOCK_MODE=false
+      - VIRUSTOTAL_API_KEY=aa6c05a60dfa6dc418c456cda3cf48ef8c5c57398f7c1f96aa2d46b33a8ccc2d
+      - ABUSEIPDB_API_KEY=9ff8ece82d5bd2055f9cb0f033bcc99ac86a13909305923ff3f30ae275202014a13060d5ea472a1d
+      - OTX_API_KEY=596dbb96b1b810bd1f12afd0fcfa33bdc177845916ce652d2584512ee3b9887f
     ports:
       - "8000:8000"
     depends_on:

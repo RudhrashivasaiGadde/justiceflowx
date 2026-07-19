@@ -6,7 +6,7 @@ import models
 import schemas
 from auth import RoleChecker, get_current_user
 from database import get_db
-import pcap_parser
+from services import pcap_parser
 from services.threat_intel import process_pcap_ips
 
 router = APIRouter(

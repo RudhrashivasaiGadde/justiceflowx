@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from database import engine, get_db
 import models
 from routers import auth, cases
+from routers import threat_intel as threat_intel_router
 
 from contextlib import asynccontextmanager
 
@@ -48,6 +49,7 @@ from routers import auth, cases, law
 app.include_router(auth.router)
 app.include_router(cases.router)
 app.include_router(law.router)
+app.include_router(threat_intel_router.router)
 
 # --- GLOBAL ROUTES ---
 
